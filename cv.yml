@@ -1,0 +1,99 @@
+- title: General Information
+  type: map
+  contents:
+    - name: Full Name
+      value: Florian Jonas
+    - name: Date of Birth
+      value: 13th June 1995
+    - name: Languages
+      value: English, German
+
+- title: Education
+  type: time_table
+  contents:
+    - title: Doctor of Natural Sciences (summa cum laude)
+      institution: University of Münster, Germany / CERN, Switzerland
+      department: Institute for Nuclear Physics
+      location: Geneva, CH
+      year: 2023
+      maindescription:
+        - '"Probing the initial state of heavy-ion collisions with isolated prompt photons"'
+      description:
+        - research carried out in collaboartion with Oak Ridge Nation Lab (ORNL) while being stations full time at CERN, Switzerland
+    - title: Master of Science (Physics)
+      institution: University of Münster, Germany
+      department: Institute for Nuclear Physics
+      location: Münster, DE
+      year: 2018
+      maindescription:
+        - '"Measurement of ω and η mesons via their three pion decay with ALICE in pp collisions at √s=7 TeV"'
+    - title: Bachelor of Science (Physics)
+      institution: University of Münster, Germany
+      department: Institute for Nuclear Physics
+      location: Münster, DE
+      year: 2016
+      maindescription:
+        - '"Simulations for optimization of ω-reconstruction at ALICE"'
+    - title: Abitur
+      institution: Freiherr-vom-Stein Gymnasium, Germany
+      year: 2013
+      location: Hamm, DE
+- title: Experience
+  type: time_table
+  contents:
+    - title: Research Fellow (EP)
+      institution: CERN
+      year: 2025 - now
+      location: Geneva, CH
+    - title: Postdoctoral Scholar
+      institution: University of California Berkeley / LBNL
+      year: 2023 - 2025
+      location: Geneva, CH
+    - title: Scientific Assistant
+      year: 2018-2023
+      institution: University of Münster, Germany
+      department: Institute for Nuclear Physics
+      location: Münster, DE
+    - title: Summer Student
+      institution: European Organization for Nuclear Research (CERN)
+      department: ALICE Experiment
+      location: Geneva, CH
+      year: 2017
+    - title: Student Assistant
+      year: 2016
+      institution: University of Münster, Germany
+      department: Institute for Theoretical Physics
+      location: Münster, DE
+    - title: Internship
+      year: 2012
+      institution: German Aerospace Center (DLR)
+      department: Institute of Materials Science in Space
+      location: Cologne, DE
+
+
+- title: Honors and Awards
+  type: time_table
+  contents:
+    - year: 2024
+      items:
+      - ALICE Thesis Award 2024
+    - year: 2023
+      items: 
+        - 'Best poster prize at 798. WE-Heraeus-Seminar: Forward Physics and QCD at the LHC and EIC'
+
+# - title: Academic Interests
+#   type: nested_list
+#   contents:
+#     - title: Topic 1.
+#       items: 
+#         - Description 1.
+#         - Description 2.
+#     - title: Topic 2.
+#       items:
+#         - Description 1.
+#         - Description 2.
+
+# - title: Other Interests
+#   type: list
+#   contents:
+#     - <u>Hobbies:</u> Hobby 1, Hobby 2, etc.

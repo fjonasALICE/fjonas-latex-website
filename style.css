@@ -156,6 +156,7 @@ h1,
 h2,
 h3,
 h4,
+h5,
 p,
 ul[class],
 ol[class],
@@ -636,7 +637,56 @@ label.sidenote-toggle {
   cursor: pointer;
 }
 
+/* Abstract Toggle Button Style */
+label.sidenote-toggle.abstract-toggle {
+  display: inline;
+  color: var(--link-visited);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+label.sidenote-toggle.abstract-toggle:hover {
+  text-decoration: underline;
+}
+
+/* Abstract Sidenote - Hidden by default, shown when checked */
+.sidenote.abstract-content {
+  display: block;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  margin-bottom: 0;
+  transition: opacity 0.3s ease, max-height 0.3s ease, margin-bottom 0.3s ease;
+}
+
+input.sidenote-toggle:checked + .sidenote.abstract-content {
+  display: block;
+  opacity: 1;
+  max-height: 800px;
+  margin-bottom: 1em;
+}
+
 input.sidenote-toggle {
+  display: none;
+}
+
+/* Abstract Popup components (hidden by default) */
+.sidenote-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+  cursor: pointer;
+  
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease, visibility 0.3s;
+  pointer-events: none;
+}
+.abstract-close {
   display: none;
 }
 
@@ -670,6 +720,68 @@ input.sidenote-toggle {
   blockquote .sidenote {
     margin-right: -25vw;
     width: 16vw;
+  }
+
+  /* Abstract Popup Styles */
+  /* Move styles to base class for transition support */
+  .sidenote.abstract-content {
+    /* Override desktop properties */
+    max-height: 80vh;
+    margin: 0;
+    
+    /* Popup positioning */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 85%;
+    max-width: 600px;
+    background: var(--body-bg-color);
+    border: 2px solid var(--body-color);
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    z-index: 1001;
+    border-radius: 4px;
+    float: none;
+    clear: none;
+    
+    /* Hidden state */
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    
+    /* Transition */
+    transition: opacity 0.3s ease, visibility 0.3s;
+  }
+
+  .sidenote-toggle:checked + .sidenote.abstract-content {
+    /* Show it */
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+
+    /* Override generic checked sidenote styles to ensure centering */
+    left: 50%;
+    margin: 0;
+    width: 85%;
+    float: none;
+    clear: none;
+  }
+
+  .sidenote-toggle:checked + .sidenote.abstract-content + .sidenote-backdrop {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .abstract-close {
+    display: inline-block;
+    margin-top: 1rem;
+    float: right;
+    color: var(--link-visited);
+    text-decoration: underline;
+    cursor: pointer;
   }
 }
 
@@ -782,4 +894,144 @@ h4,
 h5,
 h6 {
   margin-bottom: 0.8rem;
+}
+
+/* Bibliography style list */
+.bib {
+  list-style-type: none;
+  counter-reset: bib-counter;
+  padding-left: 0;
+}
+
+.bib li {
+  counter-increment: bib-counter;
+  display: block;
+  margin-bottom: 1rem;
+  position: relative;
+  padding-left: 2.5rem; /* Space for the label */
+}
+
+.bib li::before {
+  content: "[" counter(bib-counter) "]";
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2rem; /* Fixed width for alignment */
+  text-align: right;
+}
+
+.bib li p {
+  margin-top: 0;
+}
+
+.bib-label {
+  background-color: var(--pre-bg-color);
+  padding: 0.1em 0.4em;
+  border-radius: 3px;
+  font-size: 0.8em;
+  font-weight: bold;
+  margin-left: 0.5em;
+  vertical-align: 1px;
+}
+
+/* Floating Sidebar TOC */
+.toc-sidebar {
+  display: none;
+  position: fixed;
+  top: 5rem;
+  left: calc(50% - 40ch - 8rem);
+  width: 7rem;
+  text-align: right;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  /* Removed transition for js-controlled opacity */
+}
+
+/* Removed .toc-sidebar.visible rule */
+
+.toc-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.8rem;
+}
+
+.toc-sidebar li {
+  margin-bottom: 0.5rem;
+}
+
+.toc-sidebar a {
+  text-decoration: none;
+  color: var(--body-color);
+  opacity: 0.4;
+  transition: opacity 0.2s;
+  border-bottom: none;
+}
+
+.toc-sidebar a:hover {
+  opacity: 1;
+  text-decoration: none;
+  color: var(--link-visited);
+}
+
+@media (min-width: 1300px) {
+  .toc-sidebar {
+    display: block;
+  }
+}
+
+/* Back to Top button for smaller screens */
+.back-to-top {
+  display: none;
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background-color: var(--body-bg-color);
+  border: 1px solid var(--body-color);
+  color: var(--body-color);
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  opacity: 0; 
+  pointer-events: none;
+  z-index: 100;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: background-color 0.2s; /* Removed opacity transition */
+}
+
+/* Removed .back-to-top.visible rule */
+
+.back-to-top:hover {
+  opacity: 1;
+  background-color: var(--pre-bg-color);
+}
+
+@media (max-width: 1299px) {
+  .back-to-top {
+    display: block;
+  }
+}
+
+/* Dark Mode Toggle */
+.dark-mode-toggle {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1000;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  color: var(--body-color);
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+.dark-mode-toggle:hover {
+  opacity: 1;
 }

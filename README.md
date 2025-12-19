@@ -1,9 +1,17 @@
-# [LaTeX.CSS](https://latex.vercel.app/)
+# Florian Jonas' Personal Website
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![latex.css on NPM](https://img.shields.io/npm/v/latex.css.svg?color=green&label=latex.css)](https://www.npmjs.com/package/latex.css)
+This repository contains the source code for my personal academic website. It is a fork of the [latex-css](https://github.com/vincentdoerig/latex-css) project by Vincent Dörig.
 
-> LaTeX.css is a minimal, almost class-less CSS library which makes any website look like a LaTeX document. It is based on @davidrzs' [latexCSS](https://github.com/davidrzs/latexcss).
+## Modifications
+
+I have heavily modified the original template to include:
+- **Dynamic Content Loading**: Scripts to load CV, contact info, and bibliography from YAML/JSON/BibTeX files (`cv-loader.js`, `contact-loader.js`, `bib-loader.js`).
+- **INSPIRE-HEP Integration**: Fetching publication details (abstracts, citations, journal, title etc.) directly from INSPIRE-HEP.
+- **UI Enhancements**: A moving sidebar, dark mode toggle, and improved mobile navigation.
+
+## Original Project: LaTeX.CSS
+
+> [LaTeX.css](https://github.com/vincentdoerig/latex-css) is a minimal, almost class-less CSS library which makes any website look like a LaTeX document.
 
 ## Getting Started
 
@@ -59,7 +67,7 @@ Contributions, feedback and issues are welcome. Feel free to fork, comment, crit
 
 ## Acknowledgements
 
-This project is based on David Zollikofer's project [latexCSS](https://github.com/davidrzs/latexcss).
+This project is based on Vincent Dörig's project [latex-css](https://github.com/vincentdoerig/latex-css).
 
 Most of the CSS reset is based on Andy Bell's [Modern CSS Reset](https://hankchizljaw.com/wrote/a-modern-css-reset/).
 
