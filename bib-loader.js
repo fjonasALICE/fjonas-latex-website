@@ -1,49 +1,14 @@
 // Function to fetch and process publications from papers.md via INSPIRE-HEP API
 async function loadPublications() {
-  const CACHE_KEY = 'inspire_hep_papers_cache';
+  const list = document.getElementById('paper-list');
   
   try {
-    const list = document.getElementById('paper-list');
-    
-    // Check for cached data and render immediately if available
-    const cachedData = localStorage.getItem(CACHE_KEY);
-    if (cachedData) {
-      try {
-        const cachedPapers = JSON.parse(cachedData);
-        if (Array.isArray(cachedPapers) && cachedPapers.length > 0) {
-           console.log("Rendering from local storage cache...");
-           renderPapersFromAPI(cachedPapers);
-        }
-      } catch (e) {
-        console.warn("Error parsing local storage cache:", e);
-      }
-    } else {
-        // Try to fetch from publications.json
-        try {
-            console.log("Checking for static publications.json...");
-            const response = await fetch('publications.json');
-            if (response.ok) {
-                const staticPapers = await response.json();
-                if (Array.isArray(staticPapers) && staticPapers.length > 0) {
-                    console.log("Rendering from static publications.json...");
-                    renderPapersFromAPI(staticPapers);
-                }
-            } else {
-                 list.innerHTML = '<li>Loading publications from INSPIRE-HEP...</li>';
-            }
-        } catch(e) {
-            console.warn("Could not load publications.json", e);
-            list.innerHTML = '<li>Loading publications from INSPIRE-HEP...</li>';
-        }
-    }
-
-    // 1. Fetch papers.md
+    // 1. Fetch papers.md to get the list of IDs
     const response = await fetch('papers.md');
     if (!response.ok) throw new Error("Could not fetch papers.md");
     const text = await response.text();
 
     // 2. Extract INSPIRE IDs
-    // Matches lines like: - https://inspirehep.net/literature/123456 ...
     const lines = text.split('\n');
     const ids = [];
     const regex = /inspirehep\.net\/literature\/(\d+)/;
@@ -60,53 +25,49 @@ async function loadPublications() {
       return;
     }
 
-    // 3. Fetch metadata from INSPIRE-HEP API
-    // We fetch them in parallel but might want to be careful with rate limits if list is huge.
-    // For ~15 items, Promise.all should be fine usually, but let's be safe with batches if needed.
-    // INSPIRE rate limit is 15 requests / 5s. If we have > 15, we need throttling.
-    // We will do batches of 5.
-
-    const papers = [];
-    const batchSize = 5;
+    // 3. Construct the single search query
+    // Query format: control_number:123 OR control_number:456 ...
+    const query = ids.map(id => `control_number:${id}`).join(' OR ');
     
-    for (let i = 0; i < ids.length; i += batchSize) {
-      const batchIds = ids.slice(i, i + batchSize);
-      const batchPromises = batchIds.map(id => 
-        fetch(`https://inspirehep.net/api/literature/${id}`)
-          .then(res => {
-            if (!res.ok) throw new Error(`API error for ${id}`);
-            return res.json();
-          })
-          .catch(err => {
-            console.error(err);
-            return null;
-          })
-      );
-      
-      const batchResults = await Promise.all(batchPromises);
-      papers.push(...batchResults.filter(p => p !== null));
-      
-      // Small delay between batches to respect rate limits
-      if (i + batchSize < ids.length) {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-      }
-    }
+    // Fields to retrieve (minimized for bandwidth)
+    // We include 'abstracts' as requested.
+    const fields = [
+      'titles',
+      'authors',
+      'publication_info',
+      'preprint_date',
+      'earliest_date',
+      'arxiv_eprints',
+      'dois',
+      'citation_count',
+      'collaborations',
+      'abstracts',
+      'documents',
+      'control_number'
+    ].join(',');
 
-    // 4. Sort by date (descending)
+    // 4. Fetch from INSPIRE-HEP API
+    // We use the search endpoint
+    const searchUrl = `https://inspirehep.net/api/literature?q=${encodeURIComponent(query)}&fields=${fields}&size=100`;
+    
+    console.log("Fetching publications from INSPIRE-HEP...");
+    const apiResponse = await fetch(searchUrl);
+    
+    if (!apiResponse.ok) {
+        throw new Error(`API Error: ${apiResponse.statusText}`);
+    }
+    
+    const data = await apiResponse.json();
+    const papers = data.hits.hits; // Search results are in hits.hits
+
+    // 5. Sort by date (descending)
     papers.sort((a, b) => {
       const dateA = getPaperDate(a);
       const dateB = getPaperDate(b);
       return dateB.localeCompare(dateA);
     });
 
-    // Save to cache
-    try {
-        localStorage.setItem(CACHE_KEY, JSON.stringify(papers));
-    } catch (e) {
-        console.warn("Failed to save to cache:", e);
-    }
-
-    // 5. Render (overwrite cache with fresh data)
+    // 6. Render
     renderPapersFromAPI(papers);
 
     if (window.MathJax) {
@@ -115,10 +76,6 @@ async function loadPublications() {
 
   } catch (error) {
     console.error("Error loading publications:", error);
-    // If we have cached data, we might not want to show an error message replacing the list,
-    // but maybe just log it or show a toast. 
-    // If the list is empty (no cache), show error.
-    const list = document.getElementById('paper-list');
     if (list.children.length === 0 || list.innerHTML.includes('Loading')) {
         list.innerHTML = `<li>Error loading publications: ${error.message}</li>`;
     }
