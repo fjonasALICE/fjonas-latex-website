@@ -10,7 +10,6 @@
 - https://inspirehep.net/literature/2797164 <!-- Technical Design Report of the ALICE Forward Calorimeter (FoCal) -->
 - https://inspirehep.net/literature/2722124 <!-- Performance of the electromagnetic and hadronic prototype segments of the ALICE -->
 - https://inspirehep.net/literature/2696557 <!-- Physics performance of the ALICE -->
-- https://inspirehep.net/literature/2720822 <!-- Probing the initial state of heavy-ion collisions with isolated prompt photons -->
 - https://inspirehep.net/literature/1805025 <!-- Letter of Intent -->
 - https://inspirehep.net/literature/1805263 <!-- Production of \(\omega\)~mesons in pp collisions at \(\sqrt\s\ -->
 - https://inspirehep.net/literature/1861559 <!-- Centrality dependence of electroweak boson production in PbPb -->

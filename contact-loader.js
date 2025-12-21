@@ -95,12 +95,17 @@ function renderContact(data) {
       } else {
         // Use generic image
         iconElement = document.createElement('img');
-        // Request black icon from Simple Icons CDN
-        iconElement.src = `https://cdn.simpleicons.org/${map.icon}/000000`; 
+        // Request icon from Simple Icons CDN with specified color (default black)
+        const iconColor = map.iconColor || '000000';
+        iconElement.src = `https://cdn.simpleicons.org/${map.icon}/${iconColor}`; 
         iconElement.alt = `${map.label} icon`;
         iconElement.style.width = '1.2em';
         iconElement.style.height = '1.2em';
         iconElement.classList.add('contact-icon');
+        // Don't invert colored icons in dark mode
+        if (map.iconColor) {
+          iconElement.classList.add('contact-icon-colored');
+        }
       }
       
       a.appendChild(iconElement);
@@ -119,13 +124,14 @@ function renderContact(data) {
   
   // Inject styles for dark mode
   // In dark mode, 'var(--body-color)' becomes light, so we need to invert the black icons to make them white
+  // But don't invert colored icons
   const style = document.createElement('style');
   style.textContent = `
-    .latex-dark .contact-icon {
+    .latex-dark .contact-icon:not(.contact-icon-colored) {
       filter: invert(1);
     }
     @media (prefers-color-scheme: dark) {
-      .latex-dark-auto .contact-icon {
+      .latex-dark-auto .contact-icon:not(.contact-icon-colored) {
         filter: invert(1);
       }
     }
@@ -147,3 +153,4 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   checkLib();
 });
+

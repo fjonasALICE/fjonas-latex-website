@@ -330,13 +330,20 @@ function formatName(lastFirst) {
 
 async function loadTalks() {
     try {
-        const response = await fetch('talk.bib');
+        // Add cache-busting parameter to ensure we get the latest version
+        const cacheBuster = `?t=${Date.now()}`;
+        const response = await fetch(`talk.bib${cacheBuster}`, {
+            cache: 'no-cache'
+        });
         if (!response.ok) throw new Error("Could not fetch talk.bib");
         const text = await response.text();
+        console.log('Loaded talk.bib, length:', text.length);
         const talks = parseBibTeX(text);
+        console.log('Parsed talks:', talks.length, 'entries');
+        console.log('Talk keys:', talks.map(t => t.key));
         renderTalks(talks);
     } catch (e) {
-        console.error(e);
+        console.error('Error loading talks:', e);
         document.getElementById('talk-list').innerHTML = "<li>Error loading talks.</li>";
     }
 }
@@ -357,8 +364,16 @@ function parseBibTeX(text) {
     let fieldMatch;
     while ((fieldMatch = fieldRegex.exec(body)) !== null) {
       const fieldName = fieldMatch[1].toLowerCase();
-      const value = fieldMatch[2] || fieldMatch[3] || fieldMatch[4];
-      if (value) entry[fieldName] = value.replace(/\s+/g, ' ').trim();
+      let value = fieldMatch[2] || fieldMatch[3] || fieldMatch[4];
+      if (value) {
+        value = value.replace(/\s+/g, ' ').trim();
+        // Convert year to number for proper sorting
+        if (fieldName === 'year') {
+          entry[fieldName] = parseInt(value, 10) || 0;
+        } else {
+          entry[fieldName] = value;
+        }
+      }
     }
     entries.push(entry);
   }
