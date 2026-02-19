@@ -1,7 +1,7 @@
 # Publications
 
 <!-- This file is read by bib-loader.js to fetch publication data from INSPIRE-HEP -->
-
+- https://inspirehep.net/literature/3121313 <!-- A compendium of cold-nuclear matter baseline predictions in light-ion collisions -->
 - https://inspirehep.net/literature/2908681 <!-- Physics with high-luminosity proton-nucleus collisions at the LHC -->
 - https://inspirehep.net/literature/2895564 <!-- Measurement of isolated prompt photon production in pp and p-Pb collisions at the LHC -->
 - https://inspirehep.net/literature/2874953 <!-- Assessing the mental health state of LHC scientists -->
