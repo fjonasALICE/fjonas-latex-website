@@ -1,6 +1,7 @@
 # Publications
 
 <!-- This file is read by bib-loader.js to fetch publication data from INSPIRE-HEP -->
+- https://inspirehep.net/literature/3123908 <!-- Measurements of the production of W and Z bosons in pp collisions at 13 TeV -->
 - https://inspirehep.net/literature/3121313 <!-- A compendium of cold-nuclear matter baseline predictions in light-ion collisions -->
 - https://inspirehep.net/literature/2908681 <!-- Physics with high-luminosity proton-nucleus collisions at the LHC -->
 - https://inspirehep.net/literature/2895564 <!-- Measurement of isolated prompt photon production in pp and p-Pb collisions at the LHC -->
